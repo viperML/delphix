@@ -25,8 +25,11 @@ To configure the installer, declare an output like so:
     };
 
     nixosConfigurations."installer" = nixpkgs.lib.nixosSystem {
-      delphix.nixosModules.installer
-      {delphix.target = self.nixosConfigurations."nixos";}
+      system = "x86_64-linux";
+      modules = [
+        delphix.nixosModules.installer
+        {delphix.target = self.nixosConfigurations."nixos";}
+      ];
     };
 
   };
@@ -42,4 +45,5 @@ nix build .#nixosConfigurations.installer.config.delphix.vm -L
 ## Limitations
 
 - Only 1 disk (/dev/vda)
+- Properly handle cross-system
 - ...
