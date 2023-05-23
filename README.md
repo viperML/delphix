@@ -36,10 +36,11 @@ To configure the installer, declare an output like so:
 }
 ```
 
-Build the VM:
+Build the VM installer and run it:
 
 ```
 nix build .#nixosConfigurations.installer.config.delphix.vm -L
+./result/bin/nixos-vm-installer
 ```
 
 ## Limitations

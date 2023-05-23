@@ -29,7 +29,7 @@ in {
 
   config = {
     delphix.vm = pkgs.writeShellApplication {
-      name = "vm";
+      name = "${target.config.networking.hostName}-vm-installer";
       runtimeInputs = with pkgs; [
         qemu
       ];
