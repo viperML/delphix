@@ -39,7 +39,7 @@ To configure the installer, declare an output like so:
 Build the VM installer and run it:
 
 ```
-nix build .#nixosConfigurations.installer.config.delphix.vm -L
+nix build .#nixosConfigurations.installer.config.delphix.vm-interactive -L
 ./result/bin/nixos-vm-installer
 ```
 

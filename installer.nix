@@ -20,18 +20,18 @@ in {
         description = "Target nixosConfiguration to install. Must include disko config.";
       };
 
-      vm = mkOption {
+      vm-interactive = mkOption {
         type = types.package;
-        description = "Script to install the configuration against a VM";
+        description = "Script to install the configuration to a VM";
       };
     };
   };
 
   config = {
-    delphix.vm = pkgs.writeShellApplication {
+    delphix.vm-interactive = pkgs.writeShellApplication {
       name = "${target.config.networking.hostName}-vm-installer";
       runtimeInputs = with pkgs; [
-        qemu
+        qemu_kvm
       ];
       text = ''
         DISK="$PWD/disk.qcow2"
@@ -39,16 +39,17 @@ in {
         qemu-img create -f qcow2 "$DISK" 10G
 
         # FIXME system
-        exec qemu-system-x86_64 \
+        exec qemu-kvm \
             -kernel "${config.system.build.kernel}/${config.system.boot.loader.kernelFile}" \
             -initrd "${config.system.build.netbootRamdisk}/initrd" \
             -nographic \
             -append "init=${config.system.build.toplevel}/init console=ttyS0,115200 loglevel=4 panic=-1" \
-            -m 8192 \
+            -m 1024 \
             --enable-kvm \
             -cpu host \
             -no-reboot \
-            -drive file="$DISK",media=disk,if=virtio
+            -drive file="$DISK",media=disk,if=virtio \
+            "$@"
       '';
     };
 
